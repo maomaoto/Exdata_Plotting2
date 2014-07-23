@@ -8,18 +8,18 @@
 NEI<- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
 
+# Extract Baltimore data
+NEI_Bal <- NEI[NEI$fips==24510,]
 # Calculate the sum in each year
-NEI_year <- tapply(NEI$Emissions, NEI$year, sum)
-# Change the scale to million tons
-NEI_year <- NEI_year/10^6
+NEI_year <- tapply(NEI_Bal$Emissions, NEI_Bal$year, sum)
 
 # Create png device
-png(filename="plot1.png", width=480, height=480)
+png(filename="plot2.png", width=480, height=480)
 
 # Plot
-plot(names(NEI_year), NEI_year, xlab="Year", ylab="Total Emissions (million tons)", xaxt="n", type="b", pch=16, lty=2, lwd=1, col="red")
+plot(names(NEI_year), NEI_year, xlab="Year", ylab=expression(PM[2.5] * " Emissions (tons)"), xaxt="n", type="b", pch=16, lty=2, lwd=1, col="red")
 axis(1,at=names(NEI_year))
-title(main=expression(PM[2.5] * " Total Emissions"))
+title(main=expression(PM[2.5] * " Emissions in the Baltimore City"))
 
 # Close png device
 dev.off()
